@@ -46,15 +46,15 @@ $ ./download_models.sh
 ```
 
 At the very first run you can execute `setup.py` script. This script will go through all your images in `./train_data` 
-folder and will compute vectors for them. It will save all data about `labels` and `images` in `./saved_data` folder. 
+folder and will compute vectors for them. It will save all data about `labels` in `./saved_data` folder. 
 If you do this, you need to provide `unpickle=True` at `main.py#L14`. It means that the recognizer will load data about 
-labels and images from `setup.py` results. You can delete your `./train_data` folder after running this script
+labels from `setup.py` results. You can delete your `./train_data` folder after running this script
 
 It is not necessary to run `setup.py`. If you won't run it before running `main.py` you need to provide `unpickle=False` 
 at `main.py#L14`. By doing so the recognizer class will load all training images from `./train_data` folder and 
-will compute vectors for them. Images and labels will be saved to `./saved_data` folder. You can delete these images now 
-as you don't need them anymore. Later you need to provide `unpickle=True` at `main.py#L14`. All labels and images data 
-will be loaded from `./saved_data` folder
+will compute vectors for them. Labels will be saved to `./saved_data` folder. You can delete these images now 
+as you don't need them anymore. Later you need to provide `unpickle=True` at `main.py#L14`. All labels data will be 
+loaded from `./saved_data` folder
 
 Don't forget to change `ANONYMOUS_UPN` and `REST_API_URL` in `settings.py` according to your needs!
 

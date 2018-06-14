@@ -1,4 +1,4 @@
-from settings import SHAPE_PREDICTOR_MODEL, FACE_RECOGNITION_MODEL, TRAIN_DATA_FOLDER, LABELS, IMAGES
+from settings import SHAPE_PREDICTOR_MODEL, FACE_RECOGNITION_MODEL, TRAIN_DATA_FOLDER, LABELS
 import pickle
 import dlib
 import glob
@@ -6,18 +6,14 @@ import cv2
 import os
 
 
-def load_data():
-    with open(LABELS, 'rb') as labels_data, open(IMAGES, 'rb') as images_data:
-        labels = pickle.load(labels_data)
-        images = pickle.load(images_data)
-
-        return labels, images
+def load_labels():
+    with open(LABELS, 'rb') as labels_data:
+        return pickle.load(labels_data)
 
 
-def save_data(labels, images):
-    with open(LABELS, 'wb') as labels_data, open(IMAGES, 'wb') as images_data:
+def save_labels(labels):
+    with open(LABELS, 'wb') as labels_data:
         pickle.dump(labels, labels_data)
-        pickle.dump(images, images_data)
 
 
 def get_dlib_components():
@@ -28,18 +24,14 @@ def get_dlib_components():
     return detector, frm, sp
 
 
-def load_images_and_vectors():
-    images = []
+def init_labels():
+    detector, frm, sp = get_dlib_components()
     labels = {}
 
-    for image in glob.glob(os.path.join(TRAIN_DATA_FOLDER, "*.jpg")):
-        label = image[len(TRAIN_DATA_FOLDER) + 1:len(image) - 4]
-        images.append(image)
+    for image_path in glob.glob(os.path.join(TRAIN_DATA_FOLDER, "*.jpg")):
+        label = image_path[len(TRAIN_DATA_FOLDER) + 1:len(image_path) - 4]
         labels[label] = []
 
-    detector, frm, sp = get_dlib_components()
-
-    for image_path in images:
         image = cv2.imread(image_path)
 
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -49,18 +41,17 @@ def load_images_and_vectors():
             continue
 
         for _, d in enumerate(dets):
-            shape = sp(image, d)
-            label = image_path[len(TRAIN_DATA_FOLDER) + 1:len(image_path) - 4]
-            vector = frm.compute_face_descriptor(image, shape)
+            shape = sp(gray, d)
+            vector = frm.compute_face_descriptor(gray, shape)
             labels[label].append(vector)
 
-    return labels, images
+    return labels
 
 
 if __name__ == '__main__':
-    print('Gathering information about labels and images from %s' % TRAIN_DATA_FOLDER)
+    print('Gathering information about labels from %s' % TRAIN_DATA_FOLDER)
 
-    labels, images = load_images_and_vectors()
-    save_data(labels, images)
+    labels = init_labels()
+    save_labels(labels)
 
-    print('Done! Data saved to %s and %s' % (LABELS, IMAGES))
+    print('Done! Data saved to %s' % LABELS)

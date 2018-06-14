@@ -1,4 +1,4 @@
-from setup import load_data, save_data, get_dlib_components, load_images_and_vectors
+from setup import load_labels, save_labels, get_dlib_components, init_labels
 from settings import ANONYMOUS_UPN
 from scipy.spatial import distance
 import cv2
@@ -10,9 +10,9 @@ class FaceRecognition:
         self.threshold = 0.55
 
         if unpickle:
-            self.labels, self.images = load_data()
+            self.labels = load_labels()
         else:
-            self.labels, self.images = load_images_and_vectors()
+            self.labels = init_labels()
 
         self.alert_ready()
 
@@ -54,7 +54,7 @@ class FaceRecognition:
 
                     self.labels[our_label].append(face_descriptor)
 
-            save_data(self.labels, self.images)
+            save_labels(self.labels)
 
             return result
 
