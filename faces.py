@@ -1,4 +1,4 @@
-from setup import load_labels, save_labels, get_dlib_components, init_labels
+from setup import load_labels, save_labels, init_labels, get_dlib_components
 from settings import ANONYMOUS_UPN
 from scipy.spatial import distance
 import cv2
