@@ -11,10 +11,10 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(channel, GPIO.IN)
 
-    recognition = FaceRecognition(unpickle=True)
+    recognizer = FaceRecognition(unpickle=True)
 
     def callback(channel):
-        result = recognition.recognize()
+        result = recognizer.face_recognition()
 
         if not result:
             for upn in result:
