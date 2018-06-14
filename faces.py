@@ -1,5 +1,5 @@
 from setup import load_data, save_data, get_dlib_components, load_images_and_vectors
-from settings import TRAIN_DATA_FOLDER, ANONYMOUS_UPN
+from settings import ANONYMOUS_UPN
 from scipy.spatial import distance
 import cv2
 
@@ -7,7 +7,6 @@ import cv2
 class FaceRecognition:
     def __init__(self, unpickle=False):
         self.detector, self.frm, self.sp = get_dlib_components()
-        self.train_data = TRAIN_DATA_FOLDER
         self.threshold = 0.55
 
         if unpickle:
