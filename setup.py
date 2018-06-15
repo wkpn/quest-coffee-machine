@@ -42,7 +42,7 @@ def init_labels():
 
         for _, d in enumerate(dets):
             shape = sp(gray, d)
-            vector = frm.compute_face_descriptor(gray, shape)
+            vector = frm.compute_face_descriptor(image, shape)
             labels[label].append(vector)
 
     return labels
